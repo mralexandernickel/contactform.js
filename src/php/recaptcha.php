@@ -3,7 +3,7 @@
 require_once("recaptchalib.php");
 
 if ($_POST["recaptcha_response_field"]) {
-  $privatekey = "6LcsROcSAAAAAKCf2RFH6lo_Q0v30r9Tn5u-CQdt";
+  $privatekey = "PLEASE_ENTER_YOUR_PRIVATEKEY";
   
   $resp = recaptcha_check_answer($privatekey, $_SERVER["REMOTE_ADDR"], $_POST["recaptcha_challenge_field"], $_POST["recaptcha_response_field"]);
   
