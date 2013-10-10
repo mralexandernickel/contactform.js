@@ -2,6 +2,12 @@
 #  jquery plugin to get a functional, dynamic and customizable contactform
 #  which uses mandrill to send the emails, ReCaptcha to validate Humanity
 #  and jquery.validate.js to validate user input
+#
+#  DEPENDENCIES:
+#    - jQuery
+#    - Mandrill Javascript API
+#    - ReCaptcha Javascript API
+#    - Handlebars
 #  
 #  @author Alexander Nickel <mr.alexander.nickel@gmail.com>
 #  @date 2013-10-10T09:41:31Z
