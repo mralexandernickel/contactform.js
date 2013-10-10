@@ -37,9 +37,9 @@ methods =
   
   insert_textarea: ->
     if config.form_element?
-      config.form_element.prepend Handlebars.templates.textarea name: "message"
+      config.form_element.prepend Handlebars.templates.textarea name: "Message"
     else
-      $.error "no form element in DOM"
+      $.error "No form element in DOM!"
     
   generate_inputs: ->
     for element in config.form_inputs
