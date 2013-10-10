@@ -44,7 +44,7 @@ methods =
       # insert recaptcha
       methods.insert_recaptcha()
       # generate inputs
-      methods.generate_inputs()
+      methods.generate_extra_inputs()
   
   insert_recaptcha: ->
     if config.form_element?
