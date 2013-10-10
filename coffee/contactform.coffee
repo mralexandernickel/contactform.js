@@ -68,8 +68,9 @@ methods =
       $.error "No form element found in DOM!"
     
   generate_extra_inputs: ->
-    for element in config.extra_inputs
-      $("#contactform_extra_elements").append Handlebars.templates.input element
+    if config.extra_inputs?
+      for element in config.extra_inputs
+        $("#contactform_extra_elements").append Handlebars.templates.input element
   
   add_submit_handler: ->
     if config.form_element?
