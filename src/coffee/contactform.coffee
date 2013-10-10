@@ -16,7 +16,8 @@
 #  TODO find a way to add extra inputs to the email
 #  TODO make error-messages configurable
 #  TODO add clientside input validation --> jquery.validate.js
-#
+#  TODO catch the errors!
+#  TODO add predefined extra-fields like a datepicker and stuff!
 #
 $ = jQuery
 
