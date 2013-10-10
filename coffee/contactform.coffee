@@ -24,7 +24,7 @@ methods =
     methods.generate_inputs()
     
   insert_form: ->
-    if container?
+    if config.container?
       config.container.html Handlebars.templates.form()
     
   generate_inputs: ->
