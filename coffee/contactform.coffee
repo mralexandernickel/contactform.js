@@ -10,18 +10,29 @@ $ = jQuery
 
 config =
   mandrill_api_key: ""
+  container: null
 
 methods =
   init: (options) ->
+    # set the container
+    config.container = $(this)
     # set options
     $.extend config, options
+    # insert form
+    methods.insert_form()
     # generate inputs
     methods.generate_inputs()
+    
+  insert_form: ->
+    if container?
+      config.container.html Handlebars.templates.form()
+    
   generate_inputs: ->
     for element in config.form_inputs
-      $("#form_contactform").prepend Handlebars.templates.input element.config
+      $("#form_contactform").prepend Handlebars.templates.input element
 
-$.contactform = (method,options...) ->
+
+$.fn.contactform = (method,options...) ->
   if methods[method]
     methods[method].apply this, options
   else if typeof method is "object" or not method
