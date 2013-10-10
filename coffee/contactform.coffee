@@ -12,6 +12,12 @@
 #  @author Alexander Nickel <mr.alexander.nickel@gmail.com>
 #  @date 2013-10-10T09:41:31Z
 #
+#
+#  TODO find a way to add extra inputs to the email
+#  TODO make error-messages configurable
+#  TODO add clientside input validation --> jquery.validate.js
+#
+#
 $ = jQuery
 
 config =
