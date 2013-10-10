@@ -49,7 +49,7 @@ methods =
   insert_recaptcha: ->
     if config.form_element?
       # insert markup
-      config.form_element.prepend Handlebars.templates.recaptcha()
+      config.form_element.prepend Handlebars.templates.recaptcha placeholder: "Please Enter the 2 Words above"
       # init recaptcha
       if Recaptcha?
         if config.recaptcha_pubkey?
