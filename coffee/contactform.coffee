@@ -17,10 +17,12 @@ $ = jQuery
 config =
   mandrill_api_key: null
   recaptcha_pubkey: null
+  recaptcha_verification_url: "recaptcha.php"
   container: null
   form_element: null
-  recipients: null
+  recipients: null# an array with objects containing a key named "email" which holds the email address of one recipient
   from_email: null
+  extra_inputs: null
 
 methods =
   init: (options) ->
@@ -41,8 +43,6 @@ methods =
       methods.add_submit_handler()
       # insert recaptcha
       methods.insert_recaptcha()
-      # insert textarea
-      methods.insert_textarea()
       # generate inputs
       methods.generate_inputs()
   
@@ -61,28 +61,67 @@ methods =
           $("#recaptcha_reload").click (e) ->
             Recaptcha.reload()
         else
-          $.error "can't find you ReCaptcha Public Key... Did you set one?"
+          $.error "can't find your ReCaptcha Public Key... Did you set one?"
       else
         $.error "contactform.js needs the ReCaptcha Javascript API... is it available?"
     else
       $.error "No form element found in DOM!"
-  
-  insert_textarea: ->
-    if config.form_element?
-      config.form_element.prepend Handlebars.templates.textarea name: "Message"
-    else
-      $.error "No form element found in DOM!"
     
-  generate_inputs: ->
-    for element in config.form_inputs
-      config.form_element.prepend Handlebars.templates.input element
+  generate_extra_inputs: ->
+    for element in config.extra_inputs
+      $("#contactform_extra_elements").append Handlebars.templates.input element
   
   add_submit_handler: ->
     if config.form_element?
       config.form_element.submit (e) ->
         e.preventDefault()
+        # verify recaptcha
+        methods.verify_recaptcha()
     else
       $.error "no form element found in DOM"
+  
+  verify_recaptcha: ->
+    # define params for recaptcha verification
+    recaptcha_params =
+      recaptcha_response_field: Recaptcha.get_response()
+      recaptcha_challenge_field: Recaptcha.get_challenge()
+    # check recaptcha
+    $.post config.recaptcha_verification_url, recaptcha_params, (response) ->
+      if response is 1
+        # recaptcha is right, send the form
+        methods.send_form()
+      else
+        $.error "Your recaptcha solution is wrong!"
+  
+  send_form: ->
+    if mandrill?
+      if config.mandrill_api_key?
+        # init Mandrill
+        m = new mandrill.Mandrill config.mandrill_api_key
+        # set mandrill params
+        mandrill_params =
+          message:
+            from_email: $("#input_email").val()
+            from_name: $("#input_name").val()
+            to: config.recipients
+            subject: $("#input_subject").val()
+            text: $("#textarea_message").val()
+        # send the form
+        m.messages.send mandrill_params, (res) ->
+          # reset the form
+          methods.reset_form()
+        , (err) ->
+          $.error err
+      else
+        $.error "can't find your Mandrill Public Key... Did you set one?"
+    else
+      $.error "contactform.js needs the Mandrill Javascript API... is it available?"
+  
+  reset_form: ->
+    # reload recaptcha
+    Recaptcha.reload()
+    # reset the form
+    config.form_element[0].reset()
 
 
 $.fn.contactform = (method,options...) ->
